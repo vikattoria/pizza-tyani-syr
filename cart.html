@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина — Тяни-сыр</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Исправление для длинных названий */
+        .cart-item {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: #f9f9f9; 
+            padding: 15px; 
+            border-radius: 15px; 
+            margin-bottom: 10px; 
+            border: 1px solid #eee;
+            gap: 10px;
+        }
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1; /* Занимает всё свободное место */
+            min-width: 0; /* Важно для сокращения текста если нужно */
+        }
+        .item-text {
+            min-width: 0;
+            flex: 1;
+        }
+        .item-text strong {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* Три точки если название очень длинное */
+        }
+        
+        .order-btn-center {
+            background: #e63939;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 80%;
+            transition: transform 0.2s;
+        }
+        .order-btn-center:hover { transform: scale(1.02); }
+    </style>
+</head>
+<body>
+
+<h1 style="text-align:center; margin-top:40px;">Ваша корзина</h1>
+
+<div id="cart" class="cart-container" style="max-width: 600px; margin: 20px auto; padding: 0 20px;"></div>
+
+<div class="cart-buttons" style="display:flex; justify-content:center; gap:20px; margin-bottom: 50px;">
+    <button onclick="clearCart()" class="clear-cart" style="background:#ccc; border:none; padding:10px 20px; border-radius:10px; cursor:pointer;">Очистить</button>
+    <button onclick="order()" class="order-btn" style="background:#e63939; color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer;">Сделать заказ</button>
+</div>
+
+<div id="order-modal" class="modal">
+    <div class="modal-content">
+        <h2>Оформление заказа</h2>
+
+        <input id="name" placeholder="Имя и фамилия">
+        <input id="phone" placeholder="+7 (___) ___ __ __" oninput="maskPhone(this)">
+        <input id="address" placeholder="Адрес доставки">
+
+        <select id="time" style="width:100%; padding:10px; margin-top:10px; border-radius:10px; border:1px solid #ddd;"></select>
+
+        <textarea id="comment" placeholder="Комментарий к заказу" rows="3"></textarea>
+
+        <div id="bonus-block" style="margin-top:10px;">
+
+        <div>
+        Ваши бонусы: <strong id="user-bonus">0</strong> 🔥
+        </div>
+
+        <input 
+        id="bonus-use" 
+        type="number" 
+        placeholder="Сколько бонусов списать"
+        style="width:100%;padding:8px;margin-top:5px;border-radius:8px;border:1px solid #ddd;"
+        oninput="applyBonus()"
+        >
+
+        <div style="margin-top:5px;">
+        К оплате: <strong id="final-price">0</strong> ₽
+        </div>
+
+        </div>
+
+        <h4>Способ оплаты</h4>
+        <div class="payment-methods">
+            <label><input type="radio" name="payment" value="cash" checked onclick="toggleCard(false)"> Наличными</label>
+            <label><input type="radio" name="payment" value="card" onclick="toggleCard(true)"> Картой онлайн</label>
+            <label><input type="radio" name="payment" value="sbp" onclick="toggleCard(false)"> СБП / SberPay</label>
+        </div>
+
+        <div id="card-fields" style="display:none; flex-direction: column; gap: 10px; margin-top: 10px;">
+            <input id="card-number" placeholder="0000 0000 0000 0000" oninput="maskCard(this)" maxlength="19">
+            <div style="display: flex; gap: 10px;">
+                <input id="card-date" placeholder="ММ/ГГ" oninput="maskDate(this)" maxlength="5" style="width: 50%;">
+                <input id="card-cvv" placeholder="CVV" oninput="maskCVV(this)" maxlength="3" style="width: 50%;">
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:center; width:100%;">
+            <button onclick="placeOrder()" class="order-btn-center">Подтвердить заказ</button>
+        </div>
+        <button onclick="closeModal()" style="background:none; border:none; color:#777; cursor:pointer; margin-top:10px;">Отмена</button>
+    </div>
+</div>
+
+<div id="success-window" style="display:none; position:fixed; top:0; left:0; width:100%;height:100%; background:white; z-index:10000; justify-content:center; align-items:center; flex-direction:column; text-align:center;">
+    <img src="zakaz.png" alt="Успех" style="width:250px; margin-bottom:20px;">
+    <h1 style="color:#e63939;">Спасибо за заказ!</h1>
+    <p>Мы уже начали готовить вашу пиццу!</p>
+</div>
+
+<script>
+// --- МАСКИ ---
+function maskPhone(el) {
+    let v = el.value.replace(/\D/g, "");
+    if (v.startsWith("7") || v.startsWith("8")) v = v.slice(1);
+    let res = "";
+    if (v.length > 0) res = "+7 (" + v.slice(0, 3);
+    if (v.length > 3) res += ") " + v.slice(3, 6);
+    if (v.length > 6) res += " " + v.slice(6, 8);
+    if (v.length > 8) res += " " + v.slice(8, 10);
+    el.value = v.length === 0 ? "" : res;
+}
+function maskCard(el) {
+    let v = el.value.replace(/\D/g, "").slice(0, 16);
+    let split = v.match(/.{1,4}/g);
+    el.value = split ? split.join(" ") : v;
+}
+function maskDate(el) {
+    let v = el.value.replace(/\D/g, "").slice(0, 4);
+    el.value = v.length >= 3 ? v.slice(0, 2) + "/" + v.slice(2, 4) : v;
+}
+function maskCVV(el) {
+    el.value = el.value.replace(/\D/g, "").slice(0, 3);
+}
+
+function toggleCard(show) {
+    document.getElementById("card-fields").style.display = show ? "flex" : "none";
+}
+
+// --- ЛОГИКА КОРЗИНЫ ---
+
+function removeFromCart(idx) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.splice(idx, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
+
+function clearCart() {
+    localStorage.removeItem("cart");
+    renderCart();
+}
+
+function order() {
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+if (cart.length === 0) return alert("Добавьте что-нибудь в корзину!");
+
+document.getElementById("order-modal").style.display = "flex";
+
+let total = cart.reduce((sum, i) => sum + Number(i.price), 0);
+
+
+let user = JSON.parse(localStorage.getItem("currentUser"))
+
+if(user){
+document.getElementById("user-bonus").innerText = user.bonus || 0
+}
+
+if(user){
+document.getElementById("user-bonus").innerText = user.bonus || 0
+}
+
+}
+
+function closeModal() { document.getElementById("order-modal").style.display = "none"; }
+// ---------- ШИФРОВАНИЕ ----------
+
+// 1 уровень — Base64
+function encryptBase64(data){
+    return btoa(data)
+}
+
+// 2 уровень — Caesar cipher
+function encryptCaesar(data, shift = 3){
+    return data.split("").map(char =>
+        String.fromCharCode(char.charCodeAt(0) + shift)
+    ).join("")
+}
+
+// 3 уровень — SHA-256
+async function encryptSHA256(data){
+    const encoder = new TextEncoder()
+    const dataBuffer = encoder.encode(data)
+
+    const hashBuffer = await crypto.subtle.digest("SHA-256", dataBuffer)
+
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+
+    return hashArray.map(b => b.toString(16).padStart(2,'0')).join("")
+}
+
+// финальное тройное шифрование
+async function tripleEncrypt(data){
+
+    let step1 = encryptBase64(data)
+
+    let step2 = encryptCaesar(step1)
+
+    let step3 = await encryptSHA256(step2)
+
+    return step3
+}
+async function placeOrder() {
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const payment = document.querySelector('input[name="payment"]:checked').value;
+
+    if (!name || phone.length < 18 || !address) {
+        alert("Заполните все данные доставки!");
+        return;
+    }
+
+    if (payment === "card") {
+
+    const cNum = document.getElementById("card-number").value;
+    const cDate = document.getElementById("card-date").value;
+    const cCVV = document.getElementById("card-cvv").value;
+
+    if (cNum.length < 19) return alert("Введите номер карты!");
+    if (cDate.length < 5) return alert("Введите срок карты!");
+    if (cCVV.length < 3) return alert("Введите CVV!");
+
+    // убираем пробелы
+    const cleanNum = cNum.replace(/\s/g,'')
+
+    // тройное шифрование
+    const encNum = await tripleEncrypt(cleanNum)
+    const encDate = await tripleEncrypt(cDate)
+    const encCVV = await tripleEncrypt(cCVV)
+
+    console.log("Зашифрованная карта:")
+    console.log("номер:", encNum)
+    console.log("срок:", encDate)
+    console.log("cvv:", encCVV)
+
+    }
+
+    // Сохранение истории (если есть юзер)
+    let user = JSON.parse(localStorage.getItem("currentUser"));
+    if (user) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        user.history = user.history || [];
+        user.history.push({
+            date: new Date().toLocaleString(),
+            items: cart.map(i => ({
+            name: i.name,
+            price: i.price,
+            img: i.img
+            })),
+            total: document.getElementById("final-price").innerText
+        });
+        let usedBonus = Number(document.getElementById("bonus-use")?.value || 0)
+
+        user.bonus = (user.bonus || 0) - usedBonus
+
+        if(user.bonus < 0) user.bonus = 0
+
+        // начисляем новые
+        user.bonus += 50
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let idx = users.findIndex(u => u.login === user.login);
+        if(idx !== -1) { users[idx] = user; localStorage.setItem("users", JSON.stringify(users)); }
+    }
+
+    // Успех
+    document.getElementById("order-modal").style.display = "none";
+    document.getElementById("success-window").style.display = "flex";
+    localStorage.removeItem("cart");
+
+    setTimeout(() => { window.location.href = "index.html"; }, 3000);
+}
+
+document.addEventListener("DOMContentLoaded", renderCart);
+
+// Генерация времени
+let select = document.getElementById("time");
+let now = new Date();
+for(let h = now.getHours(); h < 24; h++){
+    for(let m of [0,30]){
+        if(h === now.getHours() && m <= now.getMinutes()) continue;
+        let t = String(h).padStart(2,'0') + ":" + String(m).padStart(2,'0');
+        let opt = document.createElement("option");
+        opt.value = t; opt.textContent = t;
+        select.appendChild(opt);
+    }
+}
+// 1. Обновленный рендер: теперь он всегда ставит "чистую" цену без скидок
+function renderCart() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let container = document.getElementById("cart");
+    container.innerHTML = "";
+
+    if (cart.length === 0) {
+        container.innerHTML = "<h3>Корзина пуста 🍕</h3>";
+        document.getElementById("final-price").innerText = 0;
+        return;
+    }
+
+    let total = 0;
+    cart.forEach((item, index) => {
+        total += Number(item.price);
+        container.innerHTML += `
+            <div class="cart-item">
+                <div class="item-info">
+                    <img src="${item.img || 'pizza.png'}" style="width:50px;height:50px;border-radius:50%">
+                    <div class="item-text">
+                        <strong>${item.name}</strong>
+                        <small>${item.size}</small>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:15px">
+                    <span>${item.price} ₽</span>
+                    <button onclick="removeFromCart(${index})" style="background:none;border:none;color:red;font-size:20px">&times;</button>
+                </div>
+            </div>`;
+    });
+
+    document.getElementById("final-price").innerText = total;
+}
+
+// 2. Обновленная логика бонусов: 1 бонус = 2 рубля, проверка баланса и суммы
+function applyBonus() {
+    let user = JSON.parse(localStorage.getItem("currentUser"));
+    if (!user) return;
+
+    // Считаем исходную сумму заново, чтобы скидка не суммировалась сама с собой
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let originalTotal = cart.reduce((sum, i) => sum + Number(i.price), 0);
+
+    let userBonuses = user.bonus || 0; 
+    let input = document.getElementById("bonus-use");
+    let requested = Number(input.value);
+
+    // Проверка 1: нельзя списать больше, чем есть на аккаунте
+    if (requested > userBonuses) {
+        requested = userBonuses;
+        input.value = userBonuses;
+    }
+
+    // Проверка 2: скидка (бонусы * 2) не может быть больше цены заказа
+    if (requested * 2 > originalTotal) {
+        requested = Math.floor(originalTotal / 2);
+        input.value = requested;
+    }
+
+    // Итоговый расчет
+    let final = originalTotal - (requested * 2);
+    document.getElementById("final-price").innerText = final;
+}
+
+// 3. Обнови функцию order, чтобы она подтягивала актуальные бонусы из профиля
+function order() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart.length === 0) return alert("Добавьте что-нибудь в корзину!");
+
+    document.getElementById("order-modal").style.display = "flex";
+    
+    let user = JSON.parse(localStorage.getItem("currentUser"));
+    if (user) {
+        document.getElementById("user-bonus").innerText = user.bonus || 0;
+    }
+    
+    renderCart(); // Сбрасываем цену до базовой при открытии модалки
+}
+</script>
+</body>
+</html> 
