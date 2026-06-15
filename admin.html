@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Админка</title>
+</head>
+
+<body style="text-align:center; margin-top:100px; font-family:'Poppins', sans-serif; background:#fff;">
+
+<h1>Админ панель 👑</h1>
+
+<input id="pizza-name" placeholder="Название">
+<input id="pizza-price" placeholder="Цена">
+<input id="pizza-img" placeholder="Картинка (название файла)">
+
+
+<button onclick="addPizza()">Добавить пиццу</button>
+
+<script>
+
+// защита
+if(localStorage.getItem("role") !== "admin"){
+    alert("Нет доступа")
+    window.location.href = "index.html"
+}
+
+function addPizza(){
+
+let name = document.getElementById("pizza-name").value
+let price = document.getElementById("pizza-price").value
+let img = document.getElementById("pizza-img").value
+
+let pizzas = JSON.parse(localStorage.getItem("pizzas")) || []
+
+pizzas.push({name, price, img})
+
+localStorage.setItem("pizzas", JSON.stringify(pizzas))
+
+alert("Пицца добавлена!")
+
+}
+
+</script>
+
+</body>
+</html>
