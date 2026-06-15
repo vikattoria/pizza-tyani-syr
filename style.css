@@ -175,18 +175,11 @@ justify-content: space-between !important;
 .phone{
     background:white;
     color:#e63939;
-    padding:16px 30px;
+    padding:16px 25px;
     border-radius:30px;
     font-weight:600;
     font-size:16px;
-    width:max-content;
-    margin-left:auto !important;
-    white-space: nowrap;
-    position: absolute;
-    right: 40px;
-    top: 70px;
-    align-self: center;
-    transform: translateY(5px);
+    white-space:nowrap;
 }
 
 .about-page{
@@ -610,140 +603,91 @@ margin-bottom:10px;
 /* ===== АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ ===== */
 @media (max-width: 768px) {
 
-    body{
-        overflow-x:hidden;
-    }
 
-    /* шапка */
-    .nav{
-        flex-direction:column;
-        gap:15px;
-        padding:15px;
-        text-align:center;
-    }
-
-    .left{
-        flex-direction:column;
-        gap:15px;
-    }
-
-    .menu{
-        flex-wrap:wrap;
-        justify-content:center;
-        gap:15px;
+    header{
         padding:0;
     }
 
-    .menu li a{
-        font-size:18px;
-    }
-
-    .phone{
-        font-size:16px;
-    }
-
-    /* главный экран */
-    .hero h2{
-        font-size:32px;
-        padding:0 15px;
-    }
-
-    .hero-pizza{
-        width:280px;
-        max-width:90%;
-    }
-
-    /* карточки пицц */
-    #menu{
-        display:flex;
-        flex-wrap:wrap;
+    .nav{
+        flex-direction:column;
         justify-content:center;
+        align-items:center;
+        gap:20px;
+        padding:20px 10px;
+    }
+
+    .left{
+        width:100%;
+        flex-direction:column;
+        align-items:center;
         gap:20px;
     }
 
-    .pizza-card{
+    .logo img{
+        width:120px;
+    }
+
+    .phone{
         width:90%;
-        max-width:320px;
+        text-align:center;
+        font-size:15px;
+        white-space:normal;
     }
 
-    /* кнопки размеров */
-    .size-select button{
-        padding:10px 14px;
-        font-size:16px;
-    }
-
-    /* добавить в корзину */
-    .add-cart{
+    .menu{
         width:100%;
-        font-size:17px;
-        padding:12px;
-    }
-
-    /* корзина */
-    .cart-button{
-        font-size:18px;
-        padding:15px 22px;
-        bottom:15px;
-        right:15px;
-    }
-
-    /* заголовки */
-    h1{
-        font-size:34px;
-    }
-
-    h2{
-        font-size:30px;
-    }
-
-    h3{
-        font-size:22px;
-    }
-
-    p{
-        font-size:17px;
-    }
-
-    /* корзина */
-    .cart-container{
+        display:flex;
         justify-content:center;
+        gap:20px;
+        flex-wrap:wrap;
     }
 
-    .cart-item{
+    .menu a{
+        font-size:18px;
+    }
+
+    .hero{
+        padding-top:20px;
+    }
+
+    .hero h2{
+        font-size:42px;
+        line-height:1.3;
+        letter-spacing:2px;
+    }
+
+    .hero-pizza{
         width:90%;
         max-width:350px;
     }
 
-    /* кнопки заказа */
-    .order-btn,
-    .clear-cart{
-        width:100%;
-        max-width:320px;
-        height:55px;
-        font-size:18px;
+    #menu{
+        padding:30px 10px;
     }
 
-    .cart-buttons{
-        flex-direction:column;
-        align-items:center;
-        gap:10px;
+    .pizza-card{
+        width:95%;
+        max-width:340px;
+        height:400px;
     }
 
-    /* модальное окно заказа */
-    .modal-content{
-        width:92%;
-        padding:20px;
+    .cart-button{
+        right:10px;
+        bottom:15px;
+        font-size:20px;
+        padding:15px 25px;
     }
 
-    .modal-content input,
-    .modal-content textarea,
-    .modal-content select{
+    h1{
+        font-size:36px;
+    }
+
+    h2{
+        font-size:32px;
+    }
+
+    p{
         font-size:16px;
-        padding:12px;
     }
 
-    .modal-content button{
-        font-size:18px;
-        padding:14px;
-    }
 }
