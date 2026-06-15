@@ -604,90 +604,278 @@ margin-bottom:10px;
 @media (max-width: 768px) {
 
 
-    header{
-        padding:0;
-    }
+body{
+overflow-x:hidden;
+}
 
-    .nav{
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-        gap:20px;
-        padding:20px 10px;
-    }
+/* ШАПКА */
 
-    .left{
-        width:100%;
-        flex-direction:column;
-        align-items:center;
-        gap:20px;
-    }
+header{
+padding:0;
+}
 
-    .logo img{
-        width:120px;
-    }
+.nav{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+padding:15px 10px;
+gap:15px;
+}
 
-    .phone{
-        width:90%;
-        text-align:center;
-        font-size:15px;
-        white-space:normal;
-    }
+.left{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:15px;
+width:100%;
+}
 
-    .menu{
-        width:100%;
-        display:flex;
-        justify-content:center;
-        gap:20px;
-        flex-wrap:wrap;
-    }
+.logo img{
+width:120px;
+height:auto;
+}
 
-    .menu a{
-        font-size:18px;
-    }
+.phone{
+position:static !important;
+transform:none !important;
+margin:0 auto !important;
+width:90%;
+max-width:400px;
+font-size:18px;
+text-align:center;
+white-space:normal;
+padding:15px;
+}
 
-    .hero{
-        padding-top:20px;
-    }
+.menu{
+display:flex;
+justify-content:center;
+align-items:center;
+flex-wrap:wrap;
+gap:20px;
+padding:0;
+margin:0;
+}
 
-    .hero h2{
-        font-size:42px;
-        line-height:1.3;
-        letter-spacing:2px;
-    }
+.menu a{
+font-size:20px;
+}
 
-    .hero-pizza{
-        width:90%;
-        max-width:350px;
-    }
+/* ГЛАВНЫЙ БАННЕР */
 
-    #menu{
-        padding:30px 10px;
-    }
+.hero{
+padding:20px 15px 40px;
+}
 
-    .pizza-card{
-        width:95%;
-        max-width:340px;
-        height:400px;
-    }
+.hero h2{
+font-size:42px;
+line-height:1.3;
+letter-spacing:1px;
+padding:0 10px;
+}
 
-    .cart-button{
-        right:10px;
-        bottom:15px;
-        font-size:20px;
-        padding:15px 25px;
-    }
+.hero-pizza{
+width:90%;
+max-width:350px;
+}
 
-    h1{
-        font-size:36px;
-    }
+/* КАРТОЧКИ ПИЦЦ */
 
-    h2{
-        font-size:32px;
-    }
+#menu{
+padding:30px 10px;
+gap:20px;
+}
 
-    p{
-        font-size:16px;
-    }
+.pizza-card{
+width:95%;
+max-width:340px;
+height:420px;
+}
+
+.card-front h3,
+.card-back h3{
+font-size:24px;
+}
+
+.card-front p,
+.card-back p{
+font-size:16px;
+}
+
+.card-front span{
+font-size:24px;
+}
+
+.size-select{
+justify-content:center;
+}
+
+.size-select button{
+font-size:18px;
+padding:10px 14px;
+}
+
+.add-cart{
+width:100%;
+font-size:18px;
+padding:14px;
+}
+
+/* О НАС */
+
+.about-content{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.about-img{
+width:95%;
+max-width:400px;
+}
+
+.about-text{
+width:95%;
+font-size:18px;
+text-align:center;
+}
+
+/* ДОСТАВКА */
+
+.map-content{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.map-frame iframe{
+width:95%;
+height:300px;
+}
+
+.map-text{
+width:95%;
+font-size:18px;
+text-align:center;
+}
+
+/* КОРЗИНА */
+
+.cart-button{
+font-size:22px;
+padding:18px 24px;
+bottom:15px;
+right:10px;
+}
+
+.cart-container{
+width:100%;
+padding:0 10px;
+}
+
+.cart-item{
+width:100% !important;
+padding:15px;
+}
+
+.item-info{
+gap:15px;
+}
+
+.item-info img{
+width:90px !important;
+height:90px !important;
+object-fit:contain;
+}
+
+.item-text strong{
+font-size:20px;
+}
+
+.item-text small{
+font-size:16px;
+}
+
+.cart-buttons{
+position:static;
+display:flex;
+flex-direction:column;
+align-items:center;
+margin:20px 0;
+}
+
+.clear-cart,
+.order-btn{
+width:95%;
+max-width:350px;
+height:60px;
+font-size:20px;
+}
+
+/* МОДАЛЬНОЕ ОКНО */
+
+.modal-content{
+width:95%;
+max-width:none;
+padding:20px;
+}
+
+.modal-content h2{
+font-size:28px;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select{
+font-size:18px;
+padding:12px;
+}
+
+.modal-content button{
+font-size:18px;
+}
+
+/* ЛОГИН И РЕГИСТРАЦИЯ */
+
+.login-container,
+.register-container,
+.profile-container{
+width:95%;
+margin:auto;
+padding:20px;
+}
+
+.login-container input,
+.register-container input{
+font-size:18px;
+padding:12px;
+width:100%;
+}
+
+.login-container button,
+.register-container button{
+width:100%;
+height:55px;
+font-size:18px;
+}
+
+/* ОБЩИЕ ТЕКСТЫ */
+
+h1{
+font-size:38px;
+}
+
+h2{
+font-size:32px;
+}
+
+h3{
+font-size:24px;
+}
+
+p{
+font-size:18px;
+}
 
 }
