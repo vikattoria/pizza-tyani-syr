@@ -607,4 +607,143 @@ margin-bottom:10px;
 }
 
 }
+/* ===== АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ ===== */
+@media (max-width: 768px) {
 
+    body{
+        overflow-x:hidden;
+    }
+
+    /* шапка */
+    .nav{
+        flex-direction:column;
+        gap:15px;
+        padding:15px;
+        text-align:center;
+    }
+
+    .left{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .menu{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:15px;
+        padding:0;
+    }
+
+    .menu li a{
+        font-size:18px;
+    }
+
+    .phone{
+        font-size:16px;
+    }
+
+    /* главный экран */
+    .hero h2{
+        font-size:32px;
+        padding:0 15px;
+    }
+
+    .hero-pizza{
+        width:280px;
+        max-width:90%;
+    }
+
+    /* карточки пицц */
+    #menu{
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:20px;
+    }
+
+    .pizza-card{
+        width:90%;
+        max-width:320px;
+    }
+
+    /* кнопки размеров */
+    .size-select button{
+        padding:10px 14px;
+        font-size:16px;
+    }
+
+    /* добавить в корзину */
+    .add-cart{
+        width:100%;
+        font-size:17px;
+        padding:12px;
+    }
+
+    /* корзина */
+    .cart-button{
+        font-size:18px;
+        padding:15px 22px;
+        bottom:15px;
+        right:15px;
+    }
+
+    /* заголовки */
+    h1{
+        font-size:34px;
+    }
+
+    h2{
+        font-size:30px;
+    }
+
+    h3{
+        font-size:22px;
+    }
+
+    p{
+        font-size:17px;
+    }
+
+    /* корзина */
+    .cart-container{
+        justify-content:center;
+    }
+
+    .cart-item{
+        width:90%;
+        max-width:350px;
+    }
+
+    /* кнопки заказа */
+    .order-btn,
+    .clear-cart{
+        width:100%;
+        max-width:320px;
+        height:55px;
+        font-size:18px;
+    }
+
+    .cart-buttons{
+        flex-direction:column;
+        align-items:center;
+        gap:10px;
+    }
+
+    /* модальное окно заказа */
+    .modal-content{
+        width:92%;
+        padding:20px;
+    }
+
+    .modal-content input,
+    .modal-content textarea,
+    .modal-content select{
+        font-size:16px;
+        padding:12px;
+    }
+
+    .modal-content button{
+        font-size:18px;
+        padding:14px;
+    }
+}
