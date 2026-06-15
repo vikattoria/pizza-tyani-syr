@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой Профиль — Тяни-сыр</title>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f9f9f9; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .avatar-block { text-align: center; margin-bottom: 20px; }
+        #avatar-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #e63939; }
+        .bonus-card { background: #e63939; color: white; padding: 15px; border-radius: 15px; text-align: center; margin: 20px 0; }
+        .section { border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; }
+        input { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .order-item { background: #f5f5f5; padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; }
+        .btn-save { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="avatar-block">
+        <img id="avatar-img" src="https://via.placeholder.com/120" alt="Аватар">
+        <input type="text" id="avatar-url" placeholder="Ссылка на фото (URL)" onchange="updateAvatar()">
+    </div>
+
+    <h2 id="user-name">Загрузка...</h2>
+    
+    <div class="bonus-card">
+        <span>Мои баллы: </span>
+        <strong id="user-bonus">0</strong> 🔥
+    </div>
+
+    <div class="section">
+        <h3>Личные данные</h3>
+        <label>Адрес доставки:</label>
+        <input type="text" id="user-address" placeholder="Улица, дом, квартира">
+        <button class="btn-save" onclick="saveProfile()">Сохранить изменения</button>
+    </div>
+
+    <div class="section">
+       <h3>История заказов</h3>
+
+<button onclick="clearHistory()" style="
+margin-bottom:10px;
+background:#e63939;
+color:white;
+border:none;
+padding:8px 15px;
+border-radius:8px;
+cursor:pointer;">
+Очистить историю
+</button>
+
+<div id="order-history">Заказов пока нет 🍕</div>
+    </div>
+
+   <div style="text-align:center; margin-top:40px;">
+
+    <a href="index.html" style="
+    display:inline-block;
+    margin-right:20px;
+    padding:12px 25px;
+    background:#eee;
+    border-radius:10px;
+    text-decoration:none;
+    color:#333;">
+    На главную
+    </a>
+
+    <button onclick="
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('role');
+    window.location.href='login.html';
+    " style="
+    padding:12px 25px;
+    background:#e63939;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;">
+    Выйти
+    </button>
+
+    </div>
+</div>
+<script>
+function doRegister() {
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    let login = document.getElementById("reg-login").value;
+    let password = document.getElementById("reg-pass").value;
+
+    if(!login || !password){
+        alert("Логин и пароль обязательны!");
+        return;
+    }
+
+    // проверка на существующий аккаунт
+    let exist = users.find(u => u.login === login);
+
+    if(exist){
+        alert("Такой пользователь уже есть!");
+        return;
+    }
+
+    let userObj = {
+        name: document.getElementById("reg-name").value,
+        phone: document.getElementById("reg-phone").value,
+        birth: document.getElementById("reg-birth").value,
+        login: login,
+        password: password,
+        avatar: "",
+        address: "",
+        bonus: 500,
+        history: []
+    };
+
+    users.push(userObj);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Аккаунт создан!");
+    window.location.href = "login.html";
+}
+
+</script>
+
+<script>
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!currentUser) {
+    if(confirm("Вы не вошли. Зарегистрироваться?")){
+        window.location.href = "register.html";
+    } else {
+        window.location.href = "login.html";
+    }
+}
+    // Заполняем данные
+    function loadProfile() {
+        document.getElementById("user-name").innerText = currentUser.name;
+        document.getElementById("user-bonus").innerText = currentUser.bonus || 0;
+        document.getElementById("user-address").value = currentUser.address || "";
+        if (currentUser.avatar) document.getElementById("avatar-img").src = currentUser.avatar;
+        
+        // Рендерим историю заказов
+        if (currentUser.history && currentUser.history.length > 0) {
+           let historyHTML = currentUser.history.map(order => {
+
+            let itemsHTML = order.items.map(item => `
+            <div style="display:flex;align-items:center;gap:10px;margin-top:5px;">
+            <img src="${item.img}" style="width:40px;height:40px;border-radius:50%;">
+            <span>${item.name}</span>
+            <span style="margin-left:auto;font-weight:bold;">${item.price} ₽</span>
+            </div>
+            `).join("")
+
+            return `
+            <div class="order-item">
+            <strong>Заказ от ${order.date}</strong>
+            ${itemsHTML}
+            <div style="margin-top:5px;font-weight:bold;">
+            Итого: ${order.total} ₽
+            </div>
+            </div>
+            `
+
+            }).join("")
+            document.getElementById("order-history").innerHTML = historyHTML;
+        }
+    }
+
+    function updateAvatar() {
+        let url = document.getElementById("avatar-url").value;
+        document.getElementById("avatar-img").src = url;
+    }
+
+    function saveProfile() {
+        // Обновляем текущего пользователя
+        currentUser.address = document.getElementById("user-address").value;
+        currentUser.avatar = document.getElementById("avatar-url").value;
+
+        // Обновляем в общем списке пользователей
+        let index = users.findIndex(u => u.login === currentUser.login);
+        users[index] = currentUser;
+
+        localStorage.setItem("users", JSON.stringify(users));
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        alert("Данные сохранены!");
+    }
+
+    loadProfile();
+    function clearHistory(){
+
+if(!confirm("Очистить историю заказов?")) return
+
+currentUser.history = []
+
+localStorage.setItem("currentUser", JSON.stringify(currentUser))
+
+let users = JSON.parse(localStorage.getItem("users")) || []
+let index = users.findIndex(u => u.login === currentUser.login)
+
+if(index !== -1){
+users[index] = currentUser
+localStorage.setItem("users", JSON.stringify(users))
+}
+
+document.getElementById("order-history").innerHTML = "История очищена"
+
+}
+</script>
+
+</body>
+</html>
