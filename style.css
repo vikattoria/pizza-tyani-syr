@@ -563,7 +563,8 @@ margin-bottom:10px;
     text-decoration:none;
     margin-right:20px;
 }
-max-width: 768px{
+
+@media (max-width: 768px) {
 
 .nav{
     flex-direction:column;
