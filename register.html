@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <style>
+        body { text-align:center; margin-top:50px; font-family:'Poppins', sans-serif; background:#f4f4f4; }
+        .card { background: white; padding: 40px; border-radius: 20px; display: inline-block; }
+        input { display: block; width: 250px; padding: 12px; margin: 10px auto; border: 1px solid #ddd; border-radius: 10px; }
+        button { padding: 12px 30px; border: none; border-radius: 10px; background: #e63939; color: white; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Регистрация</h2>
+    <input id="reg-name" placeholder="Имя">
+    <input id="reg-phone" placeholder="Телефон">
+    <input id="reg-birth" type="date">
+    <input id="reg-login" placeholder="Придумайте логин">
+    <input id="reg-pass" type="password" placeholder="Придумайте пароль">
+    <button onclick="doRegister()">Создать аккаунт</button>
+</div>
+<script>
+
+// Автоматическое форматирование телефона
+document.getElementById("reg-phone").addEventListener("input", function (e) {
+
+let x = e.target.value.replace(/\D/g, '')
+.match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/)
+
+e.target.value =
+!x[2] ? x[1] :
+'+' + x[1] + ' ' + x[2] +
+(x[3] ? ' ' + x[3] : '') +
+(x[4] ? ' ' + x[4] : '') +
+(x[5] ? ' ' + x[5] : '')
+
+})
+
+// регистрация
+function doRegister(){
+
+let users = JSON.parse(localStorage.getItem("users")) || []
+
+let userObj = {
+
+name: document.getElementById("reg-name").value,
+phone: document.getElementById("reg-phone").value,
+birth: document.getElementById("reg-birth").value,
+login: document.getElementById("reg-login").value,
+password: document.getElementById("reg-pass").value,
+
+avatar: "",
+address: "",
+bonus: 500,
+history: []
+
+}
+
+if(!userObj.login || !userObj.password){
+alert("Логин и пароль обязательны!")
+return
+}
+
+// проверяем существует ли пользователь
+let exist = users.find(u => u.login === userObj.login)
+
+if(exist){
+alert("Такой логин уже существует!")
+return
+}
+
+// сохраняем
+users.push(userObj)
+
+localStorage.setItem("users", JSON.stringify(users))
+
+alert("Аккаунт создан! Теперь войдите.")
+
+window.location.href = "login.html"
+
+}
+
+</script><script>
+
+// Автоматическое форматирование телефона
+document.getElementById("reg-phone").addEventListener("input", function (e) {
+
+let x = e.target.value.replace(/\D/g, '')
+.match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/)
+
+e.target.value =
+!x[2] ? x[1] :
+'+' + x[1] + ' ' + x[2] +
+(x[3] ? ' ' + x[3] : '') +
+(x[4] ? ' ' + x[4] : '') +
+(x[5] ? ' ' + x[5] : '')
+
+})
+
+// регистрация
+function doRegister(){
+
+let users = JSON.parse(localStorage.getItem("users")) || []
+
+let userObj = {
+
+name: document.getElementById("reg-name").value,
+phone: document.getElementById("reg-phone").value,
+birth: document.getElementById("reg-birth").value,
+login: document.getElementById("reg-login").value,
+password: document.getElementById("reg-pass").value,
+
+avatar: "",
+address: "",
+bonus: 500,
+history: []
+
+}
+
+if(!userObj.login || !userObj.password){
+alert("Логин и пароль обязательны!")
+return
+}
+
+// проверяем существует ли пользователь
+let exist = users.find(u => u.login === userObj.login)
+
+if(exist){
+alert("Такой логин уже существует!")
+return
+}
+
+// сохраняем
+users.push(userObj)
+
+localStorage.setItem("users", JSON.stringify(users))
+
+alert("Аккаунт создан! Теперь войдите.")
+
+window.location.href = "login.html"
+
+}
+
+</script>
+
+</body>
+</html>
