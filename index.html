@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+
+<title>Тяни-сыр</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#e63939">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Тяни-сыр">
+
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<link rel="manifest" href="manifest.json">
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+<script>
+document.querySelector('.order-btn').addEventListener('click', function() {
+setTimeout(function(){
+history.replaceState(null, null, ' ');
+}, 10);
+});
+</script>
+
+<script>
+
+let selectedSize = null
+let selectedPrice = null
+
+function selectSize(btn,size,price){
+
+document.querySelectorAll(".sizes button").forEach(b=>{
+b.classList.remove("active")
+})
+
+btn.classList.add("active")
+
+selectedSize = size
+selectedPrice = price
+
+}
+
+function addToCart(name){
+
+if(!selectedSize){
+alert("Выберите размер")
+return
+}
+
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+cart.push({
+name:name,
+size:selectedSize,
+price:selectedPrice
+})
+
+localStorage.setItem("cart",JSON.stringify(cart))
+
+window.location.href="cart.html"
+
+}
+
+</script>
+<body>
+<header>
+
+<div class="nav">
+<div class="left">
+    <div class="logo">
+        <img src="logotipipi.png" alt="logo">
+       
+    </div>
+   
+    <ul class="menu">
+        <li><a href="#menu">Меню</a></li>
+        <li><a href="dostavka.html">Доставка</a></li>
+        <li><a href="about.html">О нас</a></li>
+        <li><a href="#" onclick="goToProfile()">Личный кабинет</a></li>
+    </ul>
+    <div class="phone">
+        Позвони нам, милый: +7 800 555 35-35
+    </div>
+</div>
+
+  
+
+</header>
+
+ <section class="hero">
+<h2>Самая вкусная пицца во вселенной!</h2>
+<img src="prav.png" class="hero-pizza">
+
+ </section>
+
+ <section id="menu">
+<h2>Наше меню</h2>
+ 
+ <div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <div class="badge">Умуд рекомендует!</div>
+            <img src="mori.png">
+            <h3>С морепродуктами</h3>
+            <p>Томатный соус, моцарелла, креветки</p>
+            <span>900 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Томатный соус, моцарелла, базилик</p>
+
+            <h4>Калорийность</h4>
+            <p>350 ккал / 100г</p>
+
+        <h4>Размеры</h4>
+            <div class="size-select">
+            <button data-price="900">25см</button>
+            <button data-price="950">30см</button>
+            <button data-price="1150">35см</button>
+            </div>
+              <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+
+ <div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="0.png">
+            <h3>Маргаритка</h3>
+            <p>Томатный соус, моцарелла</p>
+            <span>700 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Томатный соус, моцарелла, базилик</p>
+
+            <h4>Калорийность</h4>
+            <p>250 ккал / 100г</p>
+
+        <h4>Размеры</h4>
+            <div class="size-select">
+            <button data-price="700">25см</button>
+            <button data-price="850">30см</button>
+            <button data-price="1000">35см</button>
+            </div>
+              <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+ <div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="pepe.png">
+            <h3>Пепепе</h3>
+            <p>Пепперони, сыр, томатный соус</p>
+            <span>800 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Пепперони, сыр, томатный соус</p>
+
+            <h4>Калорийность</h4>
+            <p>350 ккал / 100г</p>
+
+            <h4>Размеры</h4>
+        <div class="size-select">
+        <button data-price="800">25см</button>
+        <button data-price="950">30см</button>
+        <button data-price="1100">35см</button>
+        </div>
+             <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+<div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="sin.png">
+            <h3>Четыре сына</h3>
+            <p> Моцарелла, дор блю, пармезан, российский</p>
+            <span>850 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Моцарелла, дор блю, пармезан, российский</p>
+
+            <h4>Калорийность</h4>
+            <p>400 ккал / 100г</p>
+
+            <h4>Размеры</h4>
+            <div class="size-select">
+            <button data-price="850">25см</button>
+            <button data-price="1000">30см</button>
+            <button data-price="1250">35см</button>
+            </div>
+              <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+<div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="derev.png">
+            <h3>Городская</h3>
+            <p>Томатный соус, свинина, моцарелла, шампиньоны, соус барбекю</p>
+            <span>850 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Томатный соус, свинина, моцарелла, шампиньоны, соус барбекю</p>
+
+            <h4>Калорийность</h4>
+            <p>450 ккал / 100г</p>
+
+            <h4>Размеры</h4>
+        <div class="size-select">
+        <button data-price="850">25см</button>
+        <button data-price="950">30см</button>
+        <button data-price="1050">35см</button>
+        </div>
+           <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+<div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="grib.png">
+            <h3>Ветчина и грибы</h3>
+            <p>Чесночный Рэнч, моцарелла, шампиньоны, ветчина и все</p>
+            <span>850 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Чесночный Рэнч, моцарелла, шампиньоны, ветчина и все</p>
+
+            <h4>Калорийность</h4>
+            <p>350 ккал / 100г</p>
+
+            <h4>Размеры</h4>
+            <div class="size-select">
+            <button data-price="850">25см</button>
+            <button data-price="1000">30см</button>
+            <button data-price="1150">35см</button>
+            </div>
+             <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+<div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="vegan.png">
+            <h3>Вегетарианская</h3>
+            <p>Томатный соус, моцарелла, сладкий перец, шампиньоны, маслины, лук, томаты</p>
+            <span>700 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Томатный соус, моцарелла, сладкий перец, шампиньоны, маслины, лук, томаты</p>
+
+            <h4>Калорийность</h4>
+            <p>300 ккал / 100г</p>
+
+          <h4>Размеры</h4>
+            <div class="size-select">
+            <button data-price="700">25см</button>
+            <button data-price="850">30см</button>
+            <button data-price="1000">35см</button>
+            </div>
+            <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+ <div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="ohota.png">
+            <h3>Охотничья</h3>
+            <p>Томатный соус, моцарелла, колбаски</p>
+            <span>750 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Томатный соус, моцарелла, колбаски, шампиньоны </p>
+
+            <h4>Калорийность</h4>
+            <p>375 ккал / 100г</p>
+
+        <h4>Размеры</h4>
+            <div class="size-select">
+            <button data-price="750">25см</button>
+            <button data-price="850">30см</button>
+            <button data-price="1000">35см</button>
+            </div>
+              <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+ <div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="cez.png">
+            <h3>Цезарь</h3>
+            <p>Томатный соус, моцарелла, салат айсберг, курочка</p>
+            <span>800 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Соус цезарь, моцарелла,салат айсберг, курочка, томаты черри</p>
+
+            <h4>Калорийность</h4>
+            <p>300 ккал / 100г</p>
+
+        <h4>Размеры</h4>
+            <div class="size-select">
+            <button data-price="800">25см</button>
+            <button data-price="850">30см</button>
+            <button data-price="1000">35см</button>
+            </div>
+              <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+ <div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="bbq.png">
+            <h3>Барбекю</h3>
+            <p>Томатный соус, моцарелла, соус барбекю, курица</p>
+            <span>800 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Томатный соус, моцарелла, соус барбекю, курица, лук</p>
+
+            <h4>Калорийность</h4>
+            <p>350 ккал / 100г</p>
+
+        <h4>Размеры</h4>
+            <div class="size-select">
+            <button data-price="800">25см</button>
+            <button data-price="950">30см</button>
+            <button data-price="1000">35см</button>
+            </div>
+              <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+ <div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="cipa.png">
+            <h3>Чесночный цыпленок</h3>
+            <p>Чесночный соус, моцарелла, цыпленок</p>
+            <span>700 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Чесночный соус, моцарелла, цыпленок</p>
+
+            <h4>Калорийность</h4>
+            <p>400 ккал / 100г</p>
+
+        <h4>Размеры</h4>
+            <div class="size-select">
+            <button data-price="700">25см</button>
+            <button data-price="850">30см</button>
+            <button data-price="1000">35см</button>
+            </div>
+              <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+ <div class="pizza-card">
+    <div class="card-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="card-front">
+            <img src="holop.png">
+            <h3>Халапеньо</h3>
+            <p>Томатный соус, моцарелла, халапеньо, грудка</p>
+            <span>700 руб.</span>
+        </div>
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="card-back">
+            <h3>Состав</h3>
+            <p>Томатный соус, моцарелла, халапеньо, грудка, перец сладкий</p>
+
+            <h4>Калорийность</h4>
+            <p>250 ккал / 100г</p>
+
+        <h4>Размеры</h4>
+            <div class="size-select">
+            <button data-price="700">25см</button>
+            <button data-price="850">30см</button>
+            <button data-price="1000">35см</button>
+            </div>
+              <button class="add-cart" onclick="addToCart(this)">Добавить в корзину</button>
+        </div>
+
+    </div>
+</div>
+</section>
+    <section class="about">
+         <h2>О нашей пиццерии</h2>
+         <p>Мы готовим пиццу по самым свэговым рецептам, йоу!</p>
+    </section>
+
+    <section class="delivery">
+        <h2>Доставка</h2>
+        <p>Доставим вашу пиццу в считанные минуты.</p>
+    </section>
+
+  <section class="contacts">
+            <h2>Контакты</h2>
+            <p>Позвони нам, милый: +7 800 555 35-35</p>
+        </section>
+
+<footer>
+    <p> © 2026 Тяни-сыр</p>
+</footer>
+
+<a href="cart.html" class="cart-button">
+Корзина <span id="cart-count">0</span>
+</a>
+
+<script>
+document.querySelectorAll(".size-select"). forEach(group =>{
+    let buttons = group.querySelectorAll("button");
+    buttons.forEach(btn => {
+        btn.addEventListener("click", function(){
+            buttons.forEach(b => b.classList.remove("active"));
+            this.classList.add("active");
+        });
+    });
+});
+</script>
+ 
+<script>
+function addToCart(btn){
+
+let card = btn.closest(".pizza-card")
+
+let name = card.querySelector(".card-front h3").innerText
+let img = card.querySelector(".card-front img").getAttribute("src")
+
+let sizeBtn = card.querySelector(".size-select .active")
+
+if(!sizeBtn){
+alert("Выберите размер пиццы")
+return
+}
+
+let size = sizeBtn.innerText
+let price = sizeBtn.dataset.price
+
+// 👉 НАЧИНАЕМ АНИМАЦИЮ
+let imgElement = card.querySelector(".card-front img")
+let rect = imgElement.getBoundingClientRect()
+
+let flyImg = imgElement.cloneNode()
+flyImg.classList.add("fly-pizza")
+
+flyImg.style.left = rect.left + "px"
+flyImg.style.top = rect.top + "px"
+
+document.body.appendChild(flyImg)
+
+// куда летим (корзина)
+let cart = document.querySelector(".cart-button")
+let cartRect = cart.getBoundingClientRect()
+
+setTimeout(()=>{
+    flyImg.style.left = cartRect.left + "px"
+    flyImg.style.top = cartRect.top + "px"
+    flyImg.style.width = "40px"
+    flyImg.style.opacity = "0.5"
+},10)
+
+// удалить после анимации
+setTimeout(()=>{
+    flyImg.remove()
+},800)
+
+// 👉 ДОБАВЛЕНИЕ В КОРЗИНУ
+let cartData = JSON.parse(localStorage.getItem("cart")) || []
+
+cartData.push({
+name:name,
+size:size,
+price:price,
+img:img
+})
+
+localStorage.setItem("cart", JSON.stringify(cartData))
+
+updateCartCount()
+}
+</script>
+
+<script>
+
+function updateCartCount(){
+
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+document.getElementById("cart-count").innerText = cart.length
+
+}
+
+updateCartCount()
+
+</script>
+<script>
+let pizzas = JSON.parse(localStorage.getItem("pizzas")) || []
+
+let menu = document.getElementById("menu")
+
+pizzas.forEach(pizza=>{
+    let div = document.createElement("div")
+    div.className = "pizza-card"
+
+    div.innerHTML = `
+        <div class="card-front">
+            <img src="${pizza.img}">
+            <h3>${pizza.name}</h3>
+            <span>${pizza.price} руб.</span>
+        </div>
+    `
+
+    menu.appendChild(div)
+})
+</script>
+
+<script>
+function checkAccount() {
+    if(localStorage.getItem("currentUser")) {
+        window.location.href = "profile.html";
+    } else {
+        window.location.href = "login.html";
+    }
+}
+</script>
+
+<script>
+function goToProfile() {
+    if (localStorage.getItem("currentUser")) {
+        window.location.href = "profile.html";
+    } else {
+        window.location.href = "login.html";
+    }
+}
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+        .register("sw.js")
+        .then(() => console.log("PWA работает"))
+        .catch(err => console.log(err));
+}
+</script>
+</body>
+</html>
